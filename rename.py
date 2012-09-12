@@ -1,0 +1,45 @@
+import sys, os
+import argparse
+import shutil
+parser = argparse.ArgumentParser(description="rename the project")
+
+parser.add_argument('--from', '-f', dest='fromarg', help="current project's name")
+parser.add_argument('--to', '-t', dest='toarg', help="project name to change to")
+
+args = parser.parse_args()
+
+fromarg = args.fromarg
+toarg = args.toarg
+
+ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+def handle(path, fromstr, tostr):
+    for f in os.listdir(path):
+        cpath = os.path.join(path, f)
+        if os.path.isdir(cpath):
+            handle(cpath, fromstr, tostr)
+        else:
+            print "%s is processed" % cpath
+            fh = open(cpath)
+            cont = fh.read()
+            fh.close()
+            cont = cont.replace(fromstr, tostr)
+            fh = open(cpath, "w")
+            fh.write(cont)
+            fh.close()
+    
+
+if fromarg and toarg:
+    for file in os.listdir(ROOT_PATH):
+        if os.path.isdir(file) and file == fromarg:
+            shutil.move(fromarg, toarg)
+            curdir = os.path.join(ROOT_PATH, toarg)
+            handle(curdir, fromarg, toarg)
+    
+    
+else:
+    parser.print_help()
+    sys.exit(0)
+    
+    
+
