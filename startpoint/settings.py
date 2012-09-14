@@ -2,6 +2,7 @@
 import os, sys
 
 
+NEED_SUPPORT_RESTFUL_API = True
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -135,6 +136,11 @@ INSTALLED_APPS = (
     'sample',
 )
 
+if NEED_SUPPORT_RESTFUL_API:
+    INSTALLED_APPS += (
+        'tastypie',
+    )
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -167,6 +173,12 @@ IP_INTERNALS = ('127.0.0.1',)
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS" : False,
 }
+
+## for tastypie settings
+if NEED_SUPPORT_RESTFUL_API:
+    API_LIMIT_PER_PAGE = 10
+    TASTYPIE_ALLOW_MISSING_SLASH = True
+    TASTYPIE_DATETIME_FORMATTING = 'rfc-2822'
 
 try:
     from local_settings import *
