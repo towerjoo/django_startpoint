@@ -1,11 +1,13 @@
 # Django settings for startpoint project.
-import os
+import os, sys
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
+sys.path.append(ROOT_PATH)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -121,11 +123,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     "django_evolution",
     "debug_toolbar",
+
+    # apps here
+    'sample',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -157,3 +162,11 @@ LOGGING = {
     }
 }
 IP_INTERNALS = ('127.0.0.1',)
+DEBUG_TOOLBAR_CONFIG = {
+    "INTERCEPT_REDIRECTS" : False,
+}
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

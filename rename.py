@@ -13,20 +13,24 @@ toarg = args.toarg
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
+def handle_file(cpath, fromstr, tostr):
+    print "%s is processed" % cpath
+    fh = open(cpath)
+    cont = fh.read()
+    fh.close()
+    cont = cont.replace(fromstr, tostr)
+    fh = open(cpath, "w")
+    fh.write(cont)
+    fh.close()
+    
+
 def handle(path, fromstr, tostr):
     for f in os.listdir(path):
         cpath = os.path.join(path, f)
         if os.path.isdir(cpath):
             handle(cpath, fromstr, tostr)
         else:
-            print "%s is processed" % cpath
-            fh = open(cpath)
-            cont = fh.read()
-            fh.close()
-            cont = cont.replace(fromstr, tostr)
-            fh = open(cpath, "w")
-            fh.write(cont)
-            fh.close()
+            handle_file(cpath, fromstr, tostr)
     
 
 if fromarg and toarg:
@@ -35,7 +39,8 @@ if fromarg and toarg:
             shutil.move(fromarg, toarg)
             curdir = os.path.join(ROOT_PATH, toarg)
             handle(curdir, fromarg, toarg)
-    
+        elif file == "manage.py":
+            handle_file(os.path.join(ROOT_PATH, file), fromarg, toarg)
     
 else:
     parser.print_help()
