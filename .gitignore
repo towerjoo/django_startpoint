@@ -4,3 +4,4 @@
 *.db
 *.log
 requirements/build/
+local_settings.py
